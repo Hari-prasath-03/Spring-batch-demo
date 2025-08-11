@@ -1,4 +1,4 @@
-package tech.hariprasath.batchdemo.config;
+package tech.hariprasath.batchdemo.config.batch;
 
 import org.springframework.batch.item.ItemProcessor;
 import tech.hariprasath.batchdemo.entity.Person;

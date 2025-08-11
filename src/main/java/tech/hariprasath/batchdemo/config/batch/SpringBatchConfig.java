@@ -1,4 +1,4 @@
-package tech.hariprasath.batchdemo.config;
+package tech.hariprasath.batchdemo.config.batch;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
