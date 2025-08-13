@@ -1,6 +1,5 @@
 package tech.hariprasath.batchdemo.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,7 +8,6 @@ import tech.hariprasath.batchdemo.entity.User;
 import tech.hariprasath.batchdemo.repository.UserRepository;
 
 @Component
-@RequiredArgsConstructor
 public class AdminUserInit {
 
     @Bean
