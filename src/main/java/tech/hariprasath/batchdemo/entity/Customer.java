@@ -1,16 +1,13 @@
 package tech.hariprasath.batchdemo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Data
 @Table(name = "Customer_tbl")
-public class Person {
+public class Customer {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

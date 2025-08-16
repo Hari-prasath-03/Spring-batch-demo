@@ -28,7 +28,6 @@ public class JobController {
         final JobParameters jobParameters = new JobParametersBuilder()
                 .addLong("startAt", System.currentTimeMillis()).toJobParameters();
 
-
         try {
             final JobExecution jobExecution = jobLauncher.run(job, jobParameters);
             map.put("success", true);

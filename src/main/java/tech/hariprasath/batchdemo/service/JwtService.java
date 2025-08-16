@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Service
 public class JwtService {
-    private final long EXPIRATION_TIME = 1000 * 60 * 60;
+    private final long EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 2;
     private final String SECRET_KEY = "9de11b8fb3b7b0c210e848df2fe19ead14ce4be5c81b897485afafd753b7c231";
     private final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
