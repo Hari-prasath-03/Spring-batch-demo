@@ -2,6 +2,7 @@ package tech.hariprasath.batchdemo.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,6 +11,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.*;
 import tech.hariprasath.batchdemo.dto.AuthRequest;
 import tech.hariprasath.batchdemo.dto.AuthResponse;
+import tech.hariprasath.batchdemo.entity.User;
+import tech.hariprasath.batchdemo.repository.UserRepository;
+import tech.hariprasath.batchdemo.roles.Role;
 import tech.hariprasath.batchdemo.service.JwtService;
 
 import java.time.Duration;
@@ -20,6 +24,27 @@ import java.time.Duration;
 public class AuthController {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
+
+    @PostMapping("/register")
+    public ResponseEntity<String> register(AuthRequest authRequest) {
+        try {
+            if(userRepository.existsByEmail(authRequest.getEmail()))
+                throw new BadCredentialsException("Email Already Exists");
+
+            User newUser = new User();
+            newUser.setEmail(authRequest.getEmail());
+            newUser.setPassword(authRequest.getPassword());
+            newUser.setName(authRequest.getEmail().split("@")[0]);
+            newUser.setRole(Role.USER);
+
+            userRepository.save(newUser);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Registered Successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw  new BadCredentialsException("Email Already Exists");
+        }
+    }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest){

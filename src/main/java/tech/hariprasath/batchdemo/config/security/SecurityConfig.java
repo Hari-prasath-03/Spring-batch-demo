@@ -2,9 +2,11 @@ package tech.hariprasath.batchdemo.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -18,8 +20,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 import tech.hariprasath.batchdemo.filter.JwtFilter;
+import tech.hariprasath.batchdemo.roles.Permissions;
+import tech.hariprasath.batchdemo.roles.Role;
 
 import java.util.List;
 
@@ -27,6 +30,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtFilter jwtFilter;
@@ -39,6 +43,11 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
                         .requestMatchers("/auth/*").permitAll()
+                        .requestMatchers("/job/*").hasRole(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET,"/details/**")
+                            .hasAnyAuthority(Permissions.BATCH_DATA_READ.name())
+                        .requestMatchers(HttpMethod.POST, "/details/**")
+                            .hasAnyAuthority(Permissions.BATCH_DATA_WRITE.name())
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
@@ -58,7 +67,6 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
         return source;
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {

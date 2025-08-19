@@ -6,6 +6,7 @@ import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +22,9 @@ public class JobController {
     private final JobLauncher jobLauncher;
     private final Job job;
 
+
     @PostMapping("/launch-job")
+    @PreAuthorize("hasAuthority('BATCH_DATA_WRITE')")
     public Map<String, Object> launchJob() {
         Map<String, Object> map = new HashMap<>();
 

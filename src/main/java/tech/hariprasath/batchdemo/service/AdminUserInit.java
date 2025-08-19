@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import tech.hariprasath.batchdemo.entity.User;
 import tech.hariprasath.batchdemo.repository.UserRepository;
+import tech.hariprasath.batchdemo.roles.Role;
 
 @Component
 public class AdminUserInit {
@@ -18,7 +19,7 @@ public class AdminUserInit {
                 admin.setName("admin");
                 admin.setEmail("hariprasathk2023@gmail.com");
                 admin.setPassword(passwordEncoder.encode("0311"));
-                admin.setRole("ADMIN");
+                admin.setRole(Role.ADMIN);
                 userRepository.save(admin);
                 System.out.println("Admin has been created");
             }
